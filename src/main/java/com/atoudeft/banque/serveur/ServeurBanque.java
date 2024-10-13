@@ -91,8 +91,8 @@ public class ServeurBanque extends Serveur {
             ConnexionBanque cnxBanque  =  (ConnexionBanque)  connectes.get(i);
             if(cnxBanque.estInactifDepuis(DELAI_INACTIVITE)){
                cnx.envoyer("END");
-               this.enlever(cnx);
                cnx.close();
+               this.enlever(cnx);
            }
         }
     }
