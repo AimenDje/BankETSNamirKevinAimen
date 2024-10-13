@@ -4,6 +4,7 @@ import com.atoudeft.banque.Banque;
 import com.atoudeft.banque.CompteBancaire;
 import com.atoudeft.banque.io.EntreesSorties;
 import com.atoudeft.commun.net.Connexion;
+import com.atoudeft.serveur.GestionnaireEvenementServeur;
 import com.atoudeft.serveur.Serveur;
 
 import java.util.ListIterator;
@@ -87,11 +88,11 @@ public class ServeurBanque extends Serveur {
     public void supprimeInactifs() {
         for (int i = 0; i<connectes.size(); i++){
             Connexion cnx = connectes.get(i);
-            ConnexionBanque compte  =  (ConnexionBanque)  connectes.get(i);
-            if(compte.estInactifDepuis(DELAI_INACTIVITE)){
+            ConnexionBanque cnxBanque  =  (ConnexionBanque)  connectes.get(i);
+            if(cnxBanque.estInactifDepuis(DELAI_INACTIVITE)){
                cnx.envoyer("END");
+               this.enlever(cnx);
                cnx.close();
-               connectes.remove(i);
            }
         }
     }
