@@ -145,9 +145,17 @@ public class Banque implements Serializable {
      * @return numéro du compte-chèque du client ayant le numéro de compte-client
      */
     public String getNumeroCompteParDefaut(String numCompteClient) {
-        //À compléter : retourner le numéro du compte-chèque du compte-client.
+        for (CompteClient compteCLient:comptes){
+            if(compteCLient.getNumero().equals(numCompteClient)){
+                List<CompteBancaire> comptesDuClient = compteCLient.getComptes();
+                for (CompteBancaire compteBancaire:comptesDuClient){
+                    if(compteBancaire.getType().equals(TypeCompte.CHEQUE)){
+                        return compteBancaire.getNumero();
 
-
-        return null; //À modifier
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

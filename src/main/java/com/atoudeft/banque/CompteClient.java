@@ -21,6 +21,10 @@ public class CompteClient implements Serializable {
         comptes = new ArrayList<>();
     }
 
+    public List<CompteBancaire> getComptes() {
+        return comptes;
+    }
+
     public String getNumero() {
         return numero;
     }
