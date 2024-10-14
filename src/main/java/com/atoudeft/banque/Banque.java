@@ -1,5 +1,6 @@
 package com.atoudeft.banque;
 
+import com.atoudeft.commun.net.Connexion;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
@@ -107,7 +108,34 @@ public class Banque implements Serializable {
                 . Créer un compte-chèque avec ce numéro et l'ajouter au compte-client;
                 . Ajouter le compte-client à la liste des comptes et retourner true.
          */
-        return this.comptes.add(new CompteClient(numCompteClient,nip)); //À modifier
+        for (int i = 0; i < numCompteClient.length(); i++) {
+            char c = numCompteClient.charAt(i);
+            if (!Character.isUpperCase(c) && !Character.isDigit(c)) {
+                return false;
+            }
+        }
+        for (int i = 0; i < nip.length(); i++) {
+            char c = nip.charAt(i);
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        if(numCompteClient.length() < 6 || numCompteClient.length() > 8){
+            return false;
+        }
+        else if(nip.length() < 4 || nip.length() > 5){
+            return false;
+        }
+        for (CompteClient compteCLient:comptes){
+            if(compteCLient.getNumero().equals(numCompteClient)){
+                return false;
+            }
+        }
+        CompteClient compteClient = new CompteClient( numCompteClient,nip);
+        CompteCheque compteCheque = new CompteCheque(CompteBancaire.genereNouveauNumero(), TypeCompte.CHEQUE);
+        compteClient.ajouter(compteCheque);
+        this.comptes.add(compteClient);
+        return true;
     }
 
     /**
@@ -118,6 +146,8 @@ public class Banque implements Serializable {
      */
     public String getNumeroCompteParDefaut(String numCompteClient) {
         //À compléter : retourner le numéro du compte-chèque du compte-client.
+
+
         return null; //À modifier
     }
 }
