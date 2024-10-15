@@ -30,7 +30,7 @@ public class Banque implements Serializable {
         else
             return null;
     }
-    /*  à revoir avec le prof concernant la méthode getCompteClient
+    /* à vérifier avec le prof pour la méthode getCompteClient
     public CompteClient getCompteClient1(String numeroCompteClient){
         for (int i =0; i<comptes.size();i++){
             if(comptes.get(i).getNumero().equals(numeroCompteClient)){
