@@ -1,6 +1,7 @@
 package com.atoudeft.serveur;
 
 import com.atoudeft.banque.Banque;
+import com.atoudeft.banque.CompteClient;
 import com.atoudeft.banque.serveur.ConnexionBanque;
 import com.atoudeft.banque.serveur.ServeurBanque;
 import com.atoudeft.commun.evenement.Evenement;
@@ -80,6 +81,30 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             cnx.envoyer("NOUVEAU NO "+t[0]+" existe");
                     }
                     break;
+                /******************* COMMANDES DE CONNEXION*******************/
+                case "CONNECT":
+                    argument = evenement.getArgument();
+                    t = argument.split(":");
+                    numCompteClient = t[0];
+                    nip = t[1];
+                    if(cnx.getNumeroCompteClient()!= null && cnx.getNumeroCompteClient().equals(numCompteClient)){
+                        cnx.envoyer("CONNECT NO");
+                        break;
+                    }
+                    banque = serveurBanque.getBanque();
+                    CompteClient compteClient = banque.getCompteClient(numCompteClient);
+                    System.out.println(compteClient);
+
+                    if(compteClient == null || !nip.equals(compteClient.getNip())){
+                        cnx.envoyer("CONNECT NO");
+                        break;
+                    }else{
+                        cnx.setNumeroCompteClient(numCompteClient);
+                        cnx.setNumeroCompteActuel(banque.getNumeroCompteParDefaut(numCompteClient));
+                        cnx.envoyer("CONNECT OK");
+                    }
+                    break;
+
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();

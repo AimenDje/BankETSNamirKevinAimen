@@ -30,6 +30,16 @@ public class Banque implements Serializable {
         else
             return null;
     }
+    /*  à revoir avec le prof concernant la méthode getCompteClient
+    public CompteClient getCompteClient1(String numeroCompteClient){
+        for (int i =0; i<comptes.size();i++){
+            if(comptes.get(i).getNumero().equals(numeroCompteClient)){
+                return comptes.get(i);
+            }
+        }
+        return null;
+
+    }*/
 
     /**
      * Vérifier qu'un compte-bancaire appartient bien au compte-client.

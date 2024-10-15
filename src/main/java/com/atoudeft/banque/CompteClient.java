@@ -28,6 +28,7 @@ public class CompteClient implements Serializable {
     public String getNumero() {
         return numero;
     }
+    public String getNip() {return nip;}
 
     /**
      * Ajoute un compte bancaire au compte-client.
@@ -38,4 +39,6 @@ public class CompteClient implements Serializable {
     public boolean ajouter(CompteBancaire compte) {
         return this.comptes.add(compte);
     }
+
+
 }
