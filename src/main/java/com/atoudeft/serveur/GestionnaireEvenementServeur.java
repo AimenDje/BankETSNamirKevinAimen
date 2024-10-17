@@ -1,12 +1,13 @@
 package com.atoudeft.serveur;
 
-import com.atoudeft.banque.Banque;
-import com.atoudeft.banque.CompteClient;
+import com.atoudeft.banque.*;
 import com.atoudeft.banque.serveur.ConnexionBanque;
 import com.atoudeft.banque.serveur.ServeurBanque;
 import com.atoudeft.commun.evenement.Evenement;
 import com.atoudeft.commun.evenement.GestionnaireEvenement;
 import com.atoudeft.commun.net.Connexion;
+
+import java.util.List;
 
 /**
  * Cette classe représente un gestionnaire d'événement d'un serveur. Lorsqu'un serveur reçoit un texte d'un client,
@@ -81,7 +82,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             cnx.envoyer("NOUVEAU NO "+t[0]+" existe");
                     }
                     break;
-                /******************* COMMANDES DE CONNEXION*******************/
                 case "CONNECT":
                     argument = evenement.getArgument();
                     t = argument.split(":");
@@ -103,6 +103,47 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         cnx.setNumeroCompteActuel(banque.getNumeroCompteParDefaut(numCompteClient));
                         cnx.envoyer("CONNECT OK");
                     }
+                    break;
+                case "EPARGNE":
+                    banque = serveurBanque.getBanque();
+                    numCompteClient = cnx.getNumeroCompteClient();
+                    compteClient = banque.getCompteClient(numCompteClient);
+                    String numeroAleatoire = CompteBancaire.genereNouveauNumero();
+                    boolean numeroExistant = true;
+
+                    if(numCompteClient== null || banque.detientCompteEpargne(numCompteClient)){
+                        cnx.envoyer("EPARGNE NO");
+                        break;
+                    }
+
+                    while(numeroExistant){
+                        numeroExistant = false;
+
+                        for (CompteClient compteCLient2:banque.getComptes()){
+                            if(compteCLient2.getNumero().equals(numeroAleatoire)) {
+                                numeroExistant = true;
+                                numeroAleatoire = CompteBancaire.genereNouveauNumero();
+                                break;
+                            }
+
+                            List<CompteBancaire> comptesDuClient = compteCLient2.getComptes();
+                            for (CompteBancaire compteBancaire:comptesDuClient){
+                                if(compteBancaire.getNumero().equals(numeroAleatoire)){
+                                    numeroExistant = true;
+                                    numeroAleatoire = CompteBancaire.genereNouveauNumero();
+                                      break;
+                                    }
+                                }
+                            if(numeroExistant){
+                                break;
+                            }
+                        }
+                    }
+
+                    CompteEpargne compteEpargne = new CompteEpargne(numeroAleatoire, TypeCompte.EPARGNE,5);
+                    compteClient.ajouter(compteEpargne);
+                    cnx.envoyer("EPARGNE OK");
+
                     break;
 
                 /******************* TRAITEMENT PAR DÉFAUT *******************/

@@ -41,6 +41,10 @@ public class Banque implements Serializable {
 
     }*/
 
+    public List<CompteClient> getComptes() {
+        return comptes;
+    }
+
     /**
      * Vérifier qu'un compte-bancaire appartient bien au compte-client.
      *
@@ -49,7 +53,36 @@ public class Banque implements Serializable {
      * @return  true si le compte-bancaire appartient au compte-client
      */
     public boolean appartientA(String numeroCompteBancaire, String numeroCompteClient) {
-        throw new NotImplementedException();
+        for (CompteClient compteClient:comptes){
+            if(compteClient.getNumero().equals(numeroCompteClient)){
+                List<CompteBancaire> comptesBancaires = compteClient.getComptes();
+                for(CompteBancaire compteBancaire:comptesBancaires){
+                    if(compteBancaire.getNumero().equals(numeroCompteBancaire)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Vérifier qu'un compte-client détient un compte chèque.
+     *
+     * @param numeroCompteClient    numéro du compte-client
+     * @return  true si le compte-client détient un compte client
+     */
+    public boolean detientCompteEpargne(String numeroCompteClient){
+        for (CompteClient compteClient : comptes) {
+            if (compteClient.getNumero().equals(numeroCompteClient)) {
+                for (CompteBancaire compteBancaire : compteClient.getComptes()) {
+                    if (TypeCompte.EPARGNE.equals(compteBancaire.getType())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
