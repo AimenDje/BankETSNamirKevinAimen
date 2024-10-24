@@ -15,8 +15,7 @@ public class CompteCheque extends CompteBancaire{
     @Override
     public boolean crediter(double montant) {
         if(montant>0){
-           double  nouveauSolde = getSolde() + montant;
-            setSolde(nouveauSolde);
+            solde = getSolde() + montant;
             return true;
         }
         return false;
@@ -24,8 +23,7 @@ public class CompteCheque extends CompteBancaire{
     @Override
     public boolean debiter(double montant) {
         if(montant>0 && getSolde()>= montant) {
-            double nouveauSolde = getSolde() - montant;
-            setSolde(nouveauSolde);
+            solde = getSolde() - montant;
             return true;
         }
         return false;

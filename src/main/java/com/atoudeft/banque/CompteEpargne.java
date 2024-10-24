@@ -20,8 +20,7 @@ public class CompteEpargne extends CompteBancaire{
     @Override
     public boolean crediter(double montant) {
         if(montant>0){
-            double nouveauSolde = getSolde() + montant;
-            setSolde(nouveauSolde);
+            solde = getSolde() + montant;
             return true;
         }
         return false;
@@ -34,7 +33,7 @@ public class CompteEpargne extends CompteBancaire{
             if(nouveauSolde<limite){
                 nouveauSolde -=frais;
             }
-            setSolde(nouveauSolde);
+            solde = nouveauSolde;
             return true;
         }
         return false;
