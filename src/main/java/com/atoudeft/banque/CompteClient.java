@@ -43,15 +43,10 @@ public class CompteClient implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (obj instanceof CompteClient) {
-            CompteClient cpt = (CompteClient) obj;
-            return this.numero.equals(cpt.numero);
-        }
-        else
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        CompteClient that = (CompteClient) obj;
+        return numero.equals(that.numero);
     }
+
 }
