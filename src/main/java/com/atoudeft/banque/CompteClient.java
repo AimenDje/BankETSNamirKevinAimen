@@ -3,6 +3,7 @@ package com.atoudeft.banque;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CompteClient implements Serializable {
     private String numero;
@@ -40,5 +41,17 @@ public class CompteClient implements Serializable {
         return this.comptes.add(compte);
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (obj instanceof CompteClient) {
+            CompteClient cpt = (CompteClient) obj;
+            return this.numero.equals(cpt.numero);
+        }
+        else
+            return false;
+    }
 }

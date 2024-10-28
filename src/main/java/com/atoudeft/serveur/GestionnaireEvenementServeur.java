@@ -61,7 +61,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                 /******************* COMMANDES DE GESTION DE COMPTES *******************/
                 case "NOUVEAU": //Crée un nouveau compte-client :
                     if (cnx.getNumeroCompteClient()!=null) {
-                        cnx.envoyer("NOUVEAU NO deja connecte");
+                        cnx.envoyer("NOUVEAU NO");
                         break;
                     }
                     argument = evenement.getArgument();
@@ -93,7 +93,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     }
                     banque = serveurBanque.getBanque();
                     CompteClient compteClient = banque.getCompteClient(numCompteClient);
-                    System.out.println(compteClient);
 
                     if(compteClient == null || !nip.equals(compteClient.getNip())){
                         cnx.envoyer("CONNECT NO");
