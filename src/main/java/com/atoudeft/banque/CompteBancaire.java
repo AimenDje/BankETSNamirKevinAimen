@@ -6,6 +6,7 @@ public abstract class CompteBancaire implements Serializable {
     private String numero;
     private TypeCompte type;
     protected double solde;
+    private PileChainee historique;
 
     /**
      * Génère un numéro de compte bancaire aléatoirement avec le format CCC00C, où C est un caractère alphabétique
