@@ -249,21 +249,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     cnx.envoyer("NO");
                     break;
 
-
-
-
-
-                    List<CompteClient> comptebanquaire=   banque.getComptes();
-                    if(comptebanquaire.contains(banque.getCompteClient(t[1]))){
-                        if(banque.transferer(Double.parseDouble(t[0]) , numeroCompteActuel,t[1])) {
-                            cnx.envoyer("OK");
-                            break;
-                        }
-                    }
-
-                    cnx.envoyer("NO");
-                    break;
-
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();
