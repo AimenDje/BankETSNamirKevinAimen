@@ -82,8 +82,8 @@ public class Banque implements Serializable {
      * @param numeroCompte numéro du compte
      * @return true si le dépot s'est effectué correctement
      */
-    public boolean deposer(double montant, String numeroCompte) {
-        throw new NotImplementedException();
+    public boolean deposer(double montant, String numeroCompte) {throw  new NotImplementedException();
+
     }
 
     /**
