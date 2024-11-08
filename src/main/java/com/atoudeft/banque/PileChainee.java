@@ -21,4 +21,19 @@ public class PileChainee implements Serializable {
         }
     }
 
+    public String toString() {
+        String s = "Liste (taille:"+this.nbrElement+")[";
+        Noeud temp = sommet;
+        int i = 0;
+        while (temp!=null) {
+            s += i+"=>"+sommet.donnes;
+            if (i<nbrElement-1)
+                s += "; ";
+            temp = temp.suivant;
+            i++;
+        }
+        s += "]";
+        return s;
+    }
+
 }
