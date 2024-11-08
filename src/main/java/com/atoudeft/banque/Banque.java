@@ -1,7 +1,7 @@
 package com.atoudeft.banque;
 
-//import com.atoudeft.commun.net.Connexion;
-//import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.atoudeft.commun.net.Connexion;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -82,8 +82,8 @@ public class Banque implements Serializable {
      * @param numeroCompte numéro du compte
      * @return true si le dépot s'est effectué correctement
      */
-    public boolean deposer(double montant, String numeroCompte) {
-        return true;
+    public boolean deposer(double montant, String numeroCompte) {throw  new NotImplementedException();
+
     }
 
     /**
@@ -94,7 +94,7 @@ public class Banque implements Serializable {
      * @return true si le retrait s'est effectué correctement
      */
     public boolean retirer(double montant, String numeroCompte) {
-        return true;
+        throw new NotImplementedException();
     }
 
     /**
@@ -105,7 +105,7 @@ public class Banque implements Serializable {
      * @return true si l'opération s'est déroulée correctement
      */
     public boolean transferer(double montant, String numeroCompteInitial, String numeroCompteFinal) {
-        return true;
+        throw new NotImplementedException();
     }
 
     /**
@@ -117,7 +117,7 @@ public class Banque implements Serializable {
      * @return true si le paiement s'est bien effectuée
      */
     public boolean payerFacture(double montant, String numeroCompte, String numeroFacture, String description) {
-        return true;
+        throw new NotImplementedException();
     }
 
     /**
