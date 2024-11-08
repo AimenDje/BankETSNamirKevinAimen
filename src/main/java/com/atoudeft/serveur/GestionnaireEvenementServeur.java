@@ -7,6 +7,7 @@ import com.atoudeft.commun.evenement.Evenement;
 import com.atoudeft.commun.evenement.GestionnaireEvenement;
 import com.atoudeft.commun.net.Connexion;
 
+
 import java.util.List;
 
 /**
@@ -144,7 +145,10 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     cnx.envoyer("EPARGNE OK");
 
                     break;
+                case"HIST":
+                    cnx.envoyer("HIST OK");
 
+                    break;
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();

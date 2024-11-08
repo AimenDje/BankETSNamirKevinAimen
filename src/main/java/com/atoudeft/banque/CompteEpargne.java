@@ -19,8 +19,10 @@ public class CompteEpargne extends CompteBancaire{
 
     @Override
     public boolean crediter(double montant) {
+        OperationDepot operationdepot = new OperationDepot(montant);
         if(montant>0){
             solde = getSolde() + montant;
+            historique.empiler(operationdepot); // empiler historique credit
             return true;
         }
         return false;
@@ -28,12 +30,14 @@ public class CompteEpargne extends CompteBancaire{
 
     @Override
     public boolean debiter(double montant) {
+        OperationRetrait operationretrait = new OperationRetrait(montant);
         if(montant>0 && getSolde()>= montant) {
             double nouveauSolde = getSolde() - montant;
             if(nouveauSolde<limite){
                 nouveauSolde -=frais;
             }
             solde = nouveauSolde;
+            historique.empiler(operationretrait); // empiler operation retrait client
             return true;
         }
         return false;

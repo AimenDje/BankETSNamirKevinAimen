@@ -6,7 +6,7 @@ public class OperationFacture extends Operation {
     private String numeroCompte , description;
 
     // constructeur
-    public OperationFacture(double montant, String numeroCompte, String description) {
+    public OperationFacture( String numeroCompte,double montant, String description) {
         super(TypeOperation.FACTURE);
         this.montant = montant;
         this.numeroCompte = numeroCompte;
