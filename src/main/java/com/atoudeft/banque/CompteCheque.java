@@ -35,11 +35,24 @@ public class CompteCheque extends CompteBancaire{
 
     @Override
     public boolean payerFacture(String numeroFacture, double montant, String description) {
+        OperationFacture operationPayeracture = new OperationFacture(numeroFacture,montant,description);
+        boolean isTrue = false;
+        if(isTrue){
+            historique.empiler(operationPayeracture);
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean transferer(double montant, String numeroCompteDestinataire) {
+
+        OperationTransfer operationTransfer = new OperationTransfer(montant,numeroCompteDestinataire);
+        boolean isTrue = false;
+        if(isTrue){
+            historique.empiler(operationTransfer);
+            return true;
+        }
         return false;
     }
 }

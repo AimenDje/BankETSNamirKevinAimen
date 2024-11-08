@@ -3,19 +3,19 @@ package com.atoudeft.banque;
 public class OperationFacture extends Operation {
 
     private double montant;
-    private String numeroCompte , description;
+    private String numeroFacture, description;
 
     // constructeur
-    public OperationFacture( String numeroCompte,double montant, String description) {
+    public OperationFacture( String numeroFacture,double montant, String description) {
         super(TypeOperation.FACTURE);
         this.montant = montant;
-        this.numeroCompte = numeroCompte;
+        this.numeroFacture = numeroFacture;
         this.description = description;
     }
 
-    public String getNumeroCompte() {
+    public String getNumeroFacture() {
 
-        return numeroCompte;
+        return numeroFacture;
     }
 
     public double getMontant() {
@@ -33,7 +33,7 @@ public class OperationFacture extends Operation {
         return "DATE: " + getDate() +'\n'+
                 "TYPE: " + getType() +'\n'+
                 "DESCRIPTION: " + description +'\n'+
-                "NUMERO COMPTE: " + numeroCompte +'\n'+
+                "NUMERO FACTURE: " + numeroFacture +'\n'+
                 "MONTANT: " + montant ;
     }
 }
