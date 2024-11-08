@@ -151,7 +151,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     TypeCompte typeCompte = null;
                     compteClient = banque.getCompteClient(numCompteClient);
                     List<CompteBancaire> comptesDuClient = compteClient.getComptes();
-                    CompteBancaire test = null;
 
                     if (argument.equals("cheque")) {
                         typeCompte = TypeCompte.CHEQUE;
@@ -161,7 +160,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                     for (CompteBancaire compteBancaire : comptesDuClient) {
                         if (typeCompte == compteBancaire.getType()) {
-                            test = compteBancaire;
                             cnx.setNumeroCompteActuel(compteBancaire.getNumero());
                             compteExistant = true;
                         }
@@ -169,7 +167,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     }
                     if (compteExistant) {
                         cnx.envoyer("SELECT OK");
-                        cnx.envoyer(String.valueOf(test.getSolde()));
                     } else {
 
                         cnx.envoyer("SELECT NO");
