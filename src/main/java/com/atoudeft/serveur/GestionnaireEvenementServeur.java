@@ -7,6 +7,7 @@ import com.atoudeft.commun.evenement.Evenement;
 import com.atoudeft.commun.evenement.GestionnaireEvenement;
 import com.atoudeft.commun.net.Connexion;
 
+
 import java.util.List;
 
 /**
@@ -183,13 +184,17 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     for (CompteBancaire compteBancaire : compteBancaires) {
                         if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
                             if (compteBancaire.crediter(Double.parseDouble(argument))) {
-                                cnx.envoyer("OK");
+                                operationstatus = true;
                                 break;
                             }
                         }
 
                     }
-                    cnx.envoyer("NO");
+                    if (operationstatus) {
+                        cnx.envoyer("OK");
+                    } else {
+                        cnx.envoyer("NO");
+                    }
                     break;
                 case "RETRAIT":
                     operationstatus = false;
@@ -223,7 +228,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     compteBancaires = compteClient.getComptes();
                     for (CompteBancaire compteBancaire : compteBancaires) {
                         if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
-                            if (compteBancaire.payerFacture(t[1], Double.parseDouble(t[0]), t[2])) {
+                            if (banque.payerFacture(Double.parseDouble(t[0]), cnx.getNumeroCompteActuel(), t[1],t[2])) {
                                 operationstatus = true;
                             }
                         }
@@ -244,21 +249,8 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     numCompteClient = cnx.getNumeroCompteClient();
                     compteClient = banque.getCompteClient(numCompteClient);
                     compteBancaires = compteClient.getComptes();
-                    CompteBancaire compteBancaireClient = null;
-                    for (CompteBancaire compteBancaire : compteBancaires) {
-                        if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
-                            compteBancaireClient = compteBancaire;
-                            for (CompteBancaire compteBancaire1 : compteBancaires) {
-                                if (compteBancaire1.getNumero().equals(t[1])) {
-                                    if (compteBancaireClient.transferer(Double.parseDouble(t[0]), t[1])) {
-                                        operationstatus = true;
-                                    }
-                                }
-
-                            }
-
-                        }
-
+                    if (banque.transferer(Double.parseDouble(t[0]), cnx.getNumeroCompteActuel(), t[1])) {
+                        operationstatus = true;
                     }
                     if (operationstatus) {
                         cnx.envoyer("OK");
@@ -267,7 +259,21 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     }
 
                     break;
+                case"HIST":
+                    banque = serveurBanque.getBanque();
+                    numCompteClient = cnx.getNumeroCompteClient();
+                    compteClient = banque.getCompteClient(numCompteClient);
+                    compteBancaires = compteClient.getComptes();
+                    for (CompteBancaire compteBancaire : compteBancaires) {
+                        if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
+                            CompteBancaire compteActif = compteBancaire;
+                            cnx.envoyer(compteActif.getHistorique().toString());
+                        }
 
+                    }
+
+
+                    break;
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();

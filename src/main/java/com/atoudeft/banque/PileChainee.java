@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 public class PileChainee implements Serializable {
     Noeud sommet;
-    int nbrElement;
+    int nbElements;
 
     void empiler(Object obj){
         Noeud nouveau = new Noeud(sommet,obj);
         this.sommet = nouveau;
-        this.nbrElement++;
+        this.nbElements++;
     }
     class Noeud implements Serializable{
         Object donnes; // contient les donnees
@@ -19,6 +19,19 @@ public class PileChainee implements Serializable {
             this.donnes = donnes;
             this.suivant = suivant;
         }
+    }
+    public String toString() {
+
+        String s = "HIST";
+        Noeud temp = sommet;
+
+        for (int i = 0; i < this.nbElements; i++) {
+            s += "\n"+ temp.donnes.toString()  ;
+
+            temp = temp.suivant;
+        }
+
+        return s;
     }
 
 }

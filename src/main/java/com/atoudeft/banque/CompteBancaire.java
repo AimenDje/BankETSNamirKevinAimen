@@ -6,7 +6,7 @@ public abstract class CompteBancaire implements Serializable {
     private String numero;
     private TypeCompte type;
     protected double solde;
-    private PileChainee historique;
+    protected PileChainee historique;
 
     /**
      * Génère un numéro de compte bancaire aléatoirement avec le format CCC00C, où C est un caractère alphabétique
@@ -34,6 +34,7 @@ public abstract class CompteBancaire implements Serializable {
         this.numero = numero;
         this.type = type;
         this.solde = 0;
+        this.historique = new PileChainee();
     }
     public String getNumero() {
         return numero;
@@ -44,6 +45,8 @@ public abstract class CompteBancaire implements Serializable {
     public double getSolde() {
         return solde;
     }
+    public PileChainee getHistorique() {
+        return this.historique;}
     public abstract boolean crediter(double montant);
     public abstract boolean debiter(double montant);
     public abstract boolean payerFacture(String numeroFacture, double montant, String description);

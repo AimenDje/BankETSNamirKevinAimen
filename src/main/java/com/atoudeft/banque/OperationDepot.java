@@ -18,8 +18,6 @@ public class OperationDepot extends Operation{
     // to string();
     @Override
     public String toString() {
-        return "DATE: " + getDate() +'\n'+
-                "TYPE: " + getType() +'\n'+
-                "MONTANT: " + montant;
+        return "DATE: " + getDate() + " TYPE: " + getType() + " MONTANT: " + montant;
     }
 }

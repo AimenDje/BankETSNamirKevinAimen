@@ -105,7 +105,26 @@ public class Banque implements Serializable {
      * @return true si l'opération s'est déroulée correctement
      */
     public boolean transferer(double montant, String numeroCompteInitial, String numeroCompteFinal) {
-        throw new NotImplementedException();
+        CompteBancaire compteInitial = null ;
+        CompteBancaire compteFinal = null;
+        for (CompteClient compteClient : this.comptes) {
+            for (CompteBancaire compteBancaire : compteClient.getComptes()) {
+            if (compteBancaire.getNumero().equals(numeroCompteFinal)) {
+                compteFinal = compteBancaire;
+            }
+                if (compteBancaire.getNumero().equals(numeroCompteInitial)) {
+                    compteInitial = compteBancaire;
+                }
+            }
+        }
+
+        if (compteInitial !=  null && compteFinal != null){
+
+
+            return compteInitial.transferer(montant,compteFinal.getNumero()) && compteFinal.crediter(montant);
+        }
+
+        return false;
     }
 
     /**
@@ -117,7 +136,17 @@ public class Banque implements Serializable {
      * @return true si le paiement s'est bien effectuée
      */
     public boolean payerFacture(double montant, String numeroCompte, String numeroFacture, String description) {
-        throw new NotImplementedException();
+        for (CompteClient compteClient : this.comptes) {
+            for (CompteBancaire compteBancaire : compteClient.getComptes()) {
+                if (compteBancaire.getNumero().equals(numeroCompte)) {
+                    if( compteBancaire.payerFacture(numeroFacture, montant, description)){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

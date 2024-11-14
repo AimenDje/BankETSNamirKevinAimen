@@ -2,19 +2,15 @@ package com.atoudeft.banque;
 
 public class OperationTransfer extends Operation{
     private double montant;
-    private String numeroFacture;
+    private String compteDestinataire;
 
-    public OperationTransfer(double montant, String numeroFacture) {
+    public OperationTransfer(double montant, String compteDestinataire) {
         super(TypeOperation.TRANSFER);
         this.montant = montant;
-        this.numeroFacture = numeroFacture;
+        this.compteDestinataire = compteDestinataire;
 
     }
 
-
-    public String getNumeroFacture() {
-        return numeroFacture;
-    }
 
     public double getMontant() {
         return montant;
@@ -23,10 +19,10 @@ public class OperationTransfer extends Operation{
 
     @Override
     public String toString() {
-        return "DATE: " + getDate()+'\n'+
-                "TYPE: " + getType() +'\n'+
-                "NUMERO DE FACTURE: " + numeroFacture +'\n'+
-                "MONTANT: " + montant;
+        return "DATE: " + getDate() + " TYPE: " + getType() + " MONTANT: " + montant + " Compte Destinataire: " + compteDestinataire ;
+
+
+
 
     }
 }
