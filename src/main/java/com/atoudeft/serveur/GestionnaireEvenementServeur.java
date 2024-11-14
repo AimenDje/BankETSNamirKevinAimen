@@ -38,7 +38,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
     @Override
     public void traiter(Evenement evenement) {
         Object source = evenement.getSource();
-        ServeurBanque serveurBanque = (ServeurBanque)serveur;
+        ServeurBanque serveurBanque = (ServeurBanque) serveur;
         Banque banque;
         ConnexionBanque cnx;
         String msg, typeEvenement, argument, numCompteClient, nip;
@@ -61,26 +61,24 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     break;
                 /******************* COMMANDES DE GESTION DE COMPTES *******************/
                 case "NOUVEAU": //Crée un nouveau compte-client :
-                    if (cnx.getNumeroCompteClient()!=null) {
+                    if (cnx.getNumeroCompteClient() != null) {
                         cnx.envoyer("NOUVEAU NO");
                         break;
                     }
                     argument = evenement.getArgument();
                     t = argument.split(":");
-                    if (t.length<2) {
+                    if (t.length < 2) {
                         cnx.envoyer("NOUVEAU NO");
-                    }
-                    else {
+                    } else {
                         numCompteClient = t[0];
                         nip = t[1];
                         banque = serveurBanque.getBanque();
-                        if (banque.ajouter(numCompteClient,nip)) {
+                        if (banque.ajouter(numCompteClient, nip)) {
                             cnx.setNumeroCompteClient(numCompteClient);
                             cnx.setNumeroCompteActuel(banque.getNumeroCompteParDefaut(numCompteClient));
                             cnx.envoyer("NOUVEAU OK " + t[0] + " cree");
-                        }
-                        else
-                            cnx.envoyer("NOUVEAU NO "+t[0]+" existe");
+                        } else
+                            cnx.envoyer("NOUVEAU NO " + t[0] + " existe");
                     }
                     break;
                 case "CONNECT":
@@ -88,17 +86,17 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     t = argument.split(":");
                     numCompteClient = t[0];
                     nip = t[1];
-                    if(cnx.getNumeroCompteClient()!= null && cnx.getNumeroCompteClient().equals(numCompteClient)){
+                    if (cnx.getNumeroCompteClient() != null && cnx.getNumeroCompteClient().equals(numCompteClient)) {
                         cnx.envoyer("CONNECT NO");
                         break;
                     }
                     banque = serveurBanque.getBanque();
                     CompteClient compteClient = banque.getCompteClient(numCompteClient);
 
-                    if(compteClient == null || !nip.equals(compteClient.getNip())){
+                    if (compteClient == null || !nip.equals(compteClient.getNip())) {
                         cnx.envoyer("CONNECT NO");
                         break;
-                    }else{
+                    } else {
                         cnx.setNumeroCompteClient(numCompteClient);
                         cnx.setNumeroCompteActuel(banque.getNumeroCompteParDefaut(numCompteClient));
                         cnx.envoyer("CONNECT OK");
@@ -111,42 +109,182 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     String numeroAleatoire = CompteBancaire.genereNouveauNumero();
                     boolean numeroExistant = true;
 
-                    if(numCompteClient== null || banque.detientCompteEpargne(numCompteClient)){
+                    if (numCompteClient == null || banque.detientCompteEpargne(numCompteClient)) {
                         cnx.envoyer("EPARGNE NO");
                         break;
                     }
 
-                    while(numeroExistant){
+                    while (numeroExistant) {
                         numeroExistant = false;
 
-                        for (CompteClient compteCLient2:banque.getComptes()){
-                            if(compteCLient2.getNumero().equals(numeroAleatoire)) {
+                        for (CompteClient compteCLient2 : banque.getComptes()) {
+                            if (compteCLient2.getNumero().equals(numeroAleatoire)) {
                                 numeroExistant = true;
                                 numeroAleatoire = CompteBancaire.genereNouveauNumero();
                                 break;
                             }
 
                             List<CompteBancaire> comptesDuClient = compteCLient2.getComptes();
-                            for (CompteBancaire compteBancaire:comptesDuClient){
-                                if(compteBancaire.getNumero().equals(numeroAleatoire)){
+                            for (CompteBancaire compteBancaire : comptesDuClient) {
+                                if (compteBancaire.getNumero().equals(numeroAleatoire)) {
                                     numeroExistant = true;
                                     numeroAleatoire = CompteBancaire.genereNouveauNumero();
-                                      break;
-                                    }
+                                    break;
                                 }
-                            if(numeroExistant){
+                            }
+                            if (numeroExistant) {
                                 break;
                             }
                         }
                     }
 
-                    CompteEpargne compteEpargne = new CompteEpargne(numeroAleatoire, TypeCompte.EPARGNE,5);
+                    CompteEpargne compteEpargne = new CompteEpargne(numeroAleatoire, TypeCompte.EPARGNE, 5);
                     compteClient.ajouter(compteEpargne);
                     cnx.envoyer("EPARGNE OK");
 
                     break;
+
+                case "SELECT":
+                    boolean compteExistant = false;
+                    argument = evenement.getArgument();
+                    banque = serveurBanque.getBanque();
+                    numCompteClient = cnx.getNumeroCompteClient();
+                    TypeCompte typeCompte = null;
+                    compteClient = banque.getCompteClient(numCompteClient);
+                    List<CompteBancaire> comptesDuClient = compteClient.getComptes();
+
+                    if (argument.equals("cheque")) {
+                        typeCompte = TypeCompte.CHEQUE;
+                    } else if (argument.equals("epargne")) {
+                        typeCompte = TypeCompte.EPARGNE;
+                    }
+
+                    for (CompteBancaire compteBancaire : comptesDuClient) {
+                        if (typeCompte == compteBancaire.getType()) {
+                            cnx.setNumeroCompteActuel(compteBancaire.getNumero());
+                            compteExistant = true;
+                        }
+
+                    }
+                    if (compteExistant) {
+                        cnx.envoyer("SELECT OK");
+                    } else {
+
+                        cnx.envoyer("SELECT NO");
+                    }
+                    break;
+
+                case "DEPOT":
+                    boolean operationstatus = false;
+                    argument = evenement.getArgument();
+                    banque = serveurBanque.getBanque();
+                    numCompteClient = cnx.getNumeroCompteClient();
+                    compteClient = banque.getCompteClient(numCompteClient);
+                    List<CompteBancaire> compteBancaires = compteClient.getComptes();
+                    for (CompteBancaire compteBancaire : compteBancaires) {
+                        if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
+                            if (compteBancaire.crediter(Double.parseDouble(argument))) {
+                                operationstatus = true;
+                                break;
+                            }
+                        }
+
+                    }
+                    if (operationstatus) {
+                        cnx.envoyer("OK");
+                    } else {
+                        cnx.envoyer("NO");
+                    }
+                    break;
+                case "RETRAIT":
+                    operationstatus = false;
+                    argument = evenement.getArgument();
+                    banque = serveurBanque.getBanque();
+                    numCompteClient = cnx.getNumeroCompteClient();
+                    compteClient = banque.getCompteClient(numCompteClient);
+                    compteBancaires = compteClient.getComptes();
+                    for (CompteBancaire compteBancaire : compteBancaires) {
+                        if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
+                            if (compteBancaire.debiter(Double.parseDouble(argument))) {
+                                operationstatus = true;
+                            }
+                        }
+
+                    }
+                    if (operationstatus) {
+                        cnx.envoyer("OK");
+                    } else {
+                        cnx.envoyer("NO");
+                    }
+
+                    break;
+                case "FACTURE":
+                    operationstatus = false;
+                    argument = evenement.getArgument();
+                    t = argument.split(" ");
+                    banque = serveurBanque.getBanque();
+                    numCompteClient = cnx.getNumeroCompteClient();
+                    compteClient = banque.getCompteClient(numCompteClient);
+                    compteBancaires = compteClient.getComptes();
+                    for (CompteBancaire compteBancaire : compteBancaires) {
+                        if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
+                            if (compteBancaire.payerFacture(t[1], Double.parseDouble(t[0]), t[2])) {
+                                operationstatus = true;
+                            }
+                        }
+
+                    }
+                    if (operationstatus) {
+                        cnx.envoyer("OK");
+                    } else {
+                        cnx.envoyer("NO");
+                    }
+
+                    break;
+                case "TRANSFER":
+                    operationstatus = false;
+                    argument = evenement.getArgument();
+                    t = argument.split(" ");
+                    banque = serveurBanque.getBanque();
+                    numCompteClient = cnx.getNumeroCompteClient();
+                    compteClient = banque.getCompteClient(numCompteClient);
+                    compteBancaires = compteClient.getComptes();
+                    CompteBancaire compteBancaireClient = null;
+                    for (CompteBancaire compteBancaire : compteBancaires) {
+                        if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
+                            compteBancaireClient = compteBancaire;
+                            for (CompteBancaire compteBancaire1 : compteBancaires) {
+                                if (compteBancaire1.getNumero().equals(t[1])) {
+                                    if (compteBancaireClient.transferer(Double.parseDouble(t[0]), t[1])) {
+                                        operationstatus = true;
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                    }
+                    if (operationstatus) {
+                        cnx.envoyer("OK");
+                    } else {
+                        cnx.envoyer("NO");
+                    }
+
+                    break;
                 case"HIST":
-                    cnx.envoyer("HIST OK");
+                    banque = serveurBanque.getBanque();
+                    numCompteClient = cnx.getNumeroCompteClient();
+                    compteClient = banque.getCompteClient(numCompteClient);
+                    compteBancaires = compteClient.getComptes();
+                    for (CompteBancaire compteBancaire : compteBancaires) {
+                        if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
+                            CompteBancaire compteActif = compteBancaire;
+                            cnx.envoyer(compteActif.getHistorique().toString());
+                        }
+
+                    }
+
 
                     break;
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
