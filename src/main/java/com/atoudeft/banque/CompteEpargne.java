@@ -45,11 +45,31 @@ public class CompteEpargne extends CompteBancaire{
 
     @Override
     public boolean payerFacture(String numeroFacture, double montant, String description) {
+       OperationFacture operationfacture = new OperationFacture(numeroFacture, montant, description);
+        if(montant>0 && getSolde()>= montant) {
+            double nouveauSolde = getSolde() - montant;
+            if(nouveauSolde<limite){
+                nouveauSolde -=frais;
+            }
+            solde = nouveauSolde;
+            historique.empiler(operationfacture); // empiler operation retrait client
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean transferer(double montant, String numeroCompteDestinataire) {
+        OperationTransfer operationtransfer = new OperationTransfer(montant, numeroCompteDestinataire);
+        if(montant>0 && getSolde()>= montant) {
+            double nouveauSolde = getSolde() - montant;
+            if(nouveauSolde<limite){
+                nouveauSolde -=frais;
+            }
+            solde = nouveauSolde;
+            historique.empiler(operationtransfer); // empiler operation retrait client
+            return true;
+        }
         return false;
     }
 

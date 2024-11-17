@@ -176,45 +176,29 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                 case "DEPOT":
                     boolean operationstatus = false;
+                    operationstatus = false;
                     argument = evenement.getArgument();
                     banque = serveurBanque.getBanque();
-                    numCompteClient = cnx.getNumeroCompteClient();
-                    compteClient = banque.getCompteClient(numCompteClient);
-                    List<CompteBancaire> compteBancaires = compteClient.getComptes();
-                    for (CompteBancaire compteBancaire : compteBancaires) {
-                        if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
-                            if (compteBancaire.crediter(Double.parseDouble(argument))) {
-                                operationstatus = true;
-                                break;
-                            }
-                        }
-
+                    if (banque.deposer(Double.parseDouble(argument), cnx.getNumeroCompteActuel())) {
+                        operationstatus = true;
                     }
                     if (operationstatus) {
-                        cnx.envoyer("OK");
+                        cnx.envoyer("DEPOT OK");
                     } else {
-                        cnx.envoyer("NO");
+                        cnx.envoyer("DEPOT NO");
                     }
                     break;
                 case "RETRAIT":
                     operationstatus = false;
                     argument = evenement.getArgument();
                     banque = serveurBanque.getBanque();
-                    numCompteClient = cnx.getNumeroCompteClient();
-                    compteClient = banque.getCompteClient(numCompteClient);
-                    compteBancaires = compteClient.getComptes();
-                    for (CompteBancaire compteBancaire : compteBancaires) {
-                        if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
-                            if (compteBancaire.debiter(Double.parseDouble(argument))) {
-                                operationstatus = true;
-                            }
-                        }
-
+                    if (banque.retirer(Double.parseDouble(argument), cnx.getNumeroCompteActuel())) {
+                        operationstatus = true;
                     }
                     if (operationstatus) {
-                        cnx.envoyer("OK");
+                        cnx.envoyer("RETRAIT OK");
                     } else {
-                        cnx.envoyer("NO");
+                        cnx.envoyer("RETRAIT NO");
                     }
 
                     break;
@@ -225,7 +209,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     banque = serveurBanque.getBanque();
                     numCompteClient = cnx.getNumeroCompteClient();
                     compteClient = banque.getCompteClient(numCompteClient);
-                    compteBancaires = compteClient.getComptes();
+                    List<CompteBancaire> compteBancaires = compteClient.getComptes();
                     for (CompteBancaire compteBancaire : compteBancaires) {
                         if (compteBancaire.getNumero().equals(cnx.getNumeroCompteActuel())) {
                             if (banque.payerFacture(Double.parseDouble(t[0]), cnx.getNumeroCompteActuel(), t[1],t[2])) {
@@ -235,9 +219,9 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                     }
                     if (operationstatus) {
-                        cnx.envoyer("OK");
+                        cnx.envoyer("FACTURE OK");
                     } else {
-                        cnx.envoyer("NO");
+                        cnx.envoyer("FACTURE NO");
                     }
 
                     break;
@@ -253,9 +237,9 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         operationstatus = true;
                     }
                     if (operationstatus) {
-                        cnx.envoyer("OK");
+                        cnx.envoyer("TRANSFER OK");
                     } else {
-                        cnx.envoyer("NO");
+                        cnx.envoyer("TRANSFER NO");
                     }
 
                     break;

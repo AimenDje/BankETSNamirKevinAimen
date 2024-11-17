@@ -82,7 +82,24 @@ public class Banque implements Serializable {
      * @param numeroCompte numéro du compte
      * @return true si le dépot s'est effectué correctement
      */
-    public boolean deposer(double montant, String numeroCompte) {throw  new NotImplementedException();
+    public boolean deposer(double montant, String numeroCompte) {
+
+        CompteBancaire compteBancaireClient = null;
+        for (CompteClient compteClient : this.comptes) {
+            for (CompteBancaire compteBancaire : compteClient.getComptes()) {
+                if (compteBancaire.getNumero().equals(numeroCompte)) {
+                    compteBancaireClient = compteBancaire;
+                }
+            }
+        }
+
+        if (compteBancaireClient !=  null){
+
+
+            return compteBancaireClient.crediter(montant);
+        }
+
+        return false;
 
     }
 
@@ -94,7 +111,24 @@ public class Banque implements Serializable {
      * @return true si le retrait s'est effectué correctement
      */
     public boolean retirer(double montant, String numeroCompte) {
-        throw new NotImplementedException();
+
+        CompteBancaire compteBancaireClient = null;
+        for (CompteClient compteClient : this.comptes) {
+            for (CompteBancaire compteBancaire : compteClient.getComptes()) {
+                if (compteBancaire.getNumero().equals(numeroCompte)) {
+                    compteBancaireClient = compteBancaire;
+                }
+            }
+        }
+
+        if (compteBancaireClient !=  null){
+
+
+            return compteBancaireClient.debiter(montant);
+        }
+
+        return false;
+
     }
 
     /**
