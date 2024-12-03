@@ -1,6 +1,7 @@
 package com.atoudeft.controleur;
 
 import com.atoudeft.client.Client;
+import com.atoudeft.client.Config;
 import com.atoudeft.vue.PanneauConfigServeur;
 
 import javax.swing.*;
@@ -54,7 +55,7 @@ public class EcouteurMenuPrincipal implements ActionListener {
                     break;
                 case "CONFIGURER":
                     if(!client.isConnecte()) {
-                        PanneauConfigServeur panel = new PanneauConfigServeur("127.0.0.1", 8888);
+                        PanneauConfigServeur panel = new PanneauConfigServeur(client.getAdrServeur(), client.getPortServeur());
                         boolean valide = false;
                         while (!valide) {
                             res = JOptionPane.showConfirmDialog(
@@ -72,24 +73,14 @@ public class EcouteurMenuPrincipal implements ActionListener {
                                 try {
                                     int port = Integer.parseInt(portServeur);
                                     valide = true;
+                                    client.setAdrServeur(adresseServeur);
+                                    client.setPortServeur(port);
+                                    JOptionPane.showMessageDialog(fenetre, "Informations reçues.", "Information", JOptionPane.INFORMATION_MESSAGE);
 
-                                    if (adresseServeur.equals("127.0.0.1") && port == 8888) {
-                                        JOptionPane.showMessageDialog(fenetre, "Connexion au serveur réussie.", "Information", JOptionPane.INFORMATION_MESSAGE);
-                                        client.connecter();
-                                        //client.envoyer("Adresse du serveur: "+ adresseServeur+ " Port:" + portServeur);
-
-
-                                    } else {
-                                        JOptionPane.showMessageDialog(fenetre, "Connexion au serveur échouée.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                                        break;
-
-                                    }
 
                                 } catch (NumberFormatException e) {
                                     JOptionPane.showMessageDialog(fenetre, "Le port doit être un entier valide.", "Erreur", JOptionPane.ERROR_MESSAGE);
 
-                                } catch (Exception e) {
-                                    JOptionPane.showMessageDialog(fenetre, "Échec de la connexion : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                                 }
                             } else {
                                 JOptionPane.showMessageDialog(fenetre, "Configuration annulée.", "Information", JOptionPane.INFORMATION_MESSAGE);
