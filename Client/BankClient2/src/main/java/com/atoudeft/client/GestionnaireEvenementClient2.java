@@ -3,6 +3,7 @@ package com.atoudeft.client;
 import com.atoudeft.commun.evenement.Evenement;
 import com.atoudeft.commun.evenement.GestionnaireEvenement;
 import com.atoudeft.commun.net.Connexion;
+import com.atoudeft.vue.PanneauConnexion;
 import com.atoudeft.vue.PanneauPrincipal;
 import com.programmes.MainFrame;
 
@@ -82,13 +83,21 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                 /******************* SÉLECTION DE COMPTES *******************/
                 case "EPARGNE" :
                     arg = evenement.getArgument();
+                    if(arg.trim().startsWith("NO")){
+                        JOptionPane.showMessageDialog(panneauPrincipal, "Épargne refusé" );
+                    }
+                    else {
+                        str = arg.substring(arg.indexOf("OK")+2).trim();
+                        t = str.split(":");
+                        panneauPrincipal.ajouterCompte(str+"[EPARGNE]");
+
+                    }
                     JOptionPane.showMessageDialog(panneauPrincipal,"EPARGNE "+arg);
                     break;
                 case "SELECT" :
                     arg = evenement.getArgument();
                     JOptionPane.showMessageDialog(panneauPrincipal,"SELECT "+arg);
                     break;
-
                 /******************* OPÉRATIONS BANCAIRES *******************/
                 case "DEPOT" :
                     arg = evenement.getArgument();
