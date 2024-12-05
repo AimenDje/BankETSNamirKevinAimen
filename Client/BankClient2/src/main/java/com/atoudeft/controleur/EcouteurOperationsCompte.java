@@ -31,7 +31,8 @@ public class EcouteurOperationsCompte implements ActionListener {
                     client.envoyer("EPARGNE");
                     break;
                 case "HIST":
-                    System.out.println("HIST");
+                    client.envoyer("HIST");
+
             }
 
 

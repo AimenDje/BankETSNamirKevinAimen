@@ -57,11 +57,11 @@ public class PanneauPrincipal  extends JPanel {
 
 
         // jtextArea
+        /*
         textAreaComptes = new JTextArea(10,30);
         textAreaComptes.setEditable(false);
-        textAreaComptes.setBackground(Color.red);
         textAreaComptes.setBorder(new LineBorder(Color.black));
-
+          */
         panneauOperationsCompte.setEcouteur(ecouteurOperationsCompte);
 
 
@@ -71,7 +71,7 @@ public class PanneauPrincipal  extends JPanel {
         jlNumerosComptes.addMouseListener(new EcouteurListeComptes(client));
 
         this.setLayout(new BorderLayout());
-        panneauCompteClient.add(textAreaComptes, BorderLayout.CENTER); // GRAND FENETRE
+        //panneauCompteClient.add(textAreaComptes, BorderLayout.CENTER); // GRAND FENETRE
         this.add(panneauConnexion, BorderLayout.NORTH);
         this.add(panneauCompteClient, BorderLayout.CENTER);
         panneauCompteClient.setVisible(false);

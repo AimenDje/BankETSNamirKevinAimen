@@ -6,6 +6,7 @@ import com.atoudeft.commun.net.Connexion;
 import com.atoudeft.vue.PanneauConnexion;
 import com.atoudeft.vue.PanneauPrincipal;
 import com.programmes.MainFrame;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 
@@ -27,14 +28,14 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
     @Override
     public void traiter(Evenement evenement) {
         Object source = evenement.getSource();
-        //Connexion cnx;
+        Connexion cnx ;
         String typeEvenement, arg, str;
         int i;
         String[] t;
         MainFrame fenetre;
 
         if (source instanceof Connexion) {
-            //cnx = (Connexion) source;
+            cnx = (Connexion) source;
             typeEvenement = evenement.getType();
             switch (typeEvenement) {
                 /******************* COMMANDES GÉNÉRALES *******************/
@@ -42,12 +43,12 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                     client.deconnecter(); //On ferme la connexion
                     break;
                 /******************* CREATION et CONNEXION *******************/
-//                case "HIST": //Le serveur a renvoyé
-//                    panneauPrincipal.setVisible(true);
-//                    JOptionPane.showMessageDialog(null,"Panneau visible");
-//                    cnx.envoyer("LIST");
-//                    arg = evenement.getArgument();
-//                    break;
+              case "HIST": //Le serveur a renvoyé
+                  arg = evenement.getArgument();
+                  panneauPrincipal.setVisible(true);
+                  JOptionPane.showMessageDialog(null,arg);
+                  cnx.envoyer("LIST");
+                 break;
                 case "OK":
                     panneauPrincipal.setVisible(true);
                     fenetre = (MainFrame)panneauPrincipal.getTopLevelAncestor();
