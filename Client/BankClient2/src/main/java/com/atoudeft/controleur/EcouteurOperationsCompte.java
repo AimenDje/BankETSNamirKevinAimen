@@ -12,7 +12,7 @@ public class EcouteurOperationsCompte implements ActionListener {
     private Client client;
     private PanneauOperationsCompte panneauOperationsCompte;
 
-    public EcouteurOperationsCompte(Client client, PanneauOperationsCompte panneauOperationsCompte) {
+    public EcouteurOperationsCompte(Client client) {
         this.client = client;
         this.panneauOperationsCompte = panneauOperationsCompte;
 
@@ -23,25 +23,18 @@ public class EcouteurOperationsCompte implements ActionListener {
         //à compléter :
         Object source = e.getSource();
         String nomAction;
-        if (source instanceof JButton) {
-            nomAction = ((JButton) source).getActionCommand();
-            switch (nomAction) {
-                case "DEPOT":
-                    System.out.println("DEPOT");
-                    break;
-                case "RETRAIT":
-                    System.out.println("RETRAIT");
-                    break;
-                case "TRANSFER":
-                    System.out.println("TRANSFER");
-                    break;
-                case "FACTURE":
-                    System.out.println("FACTURE");
+
+        if(source instanceof JButton){
+            nomAction = ((JButton)source).getActionCommand();
+            switch (nomAction){
+                case "EPARGNE":
+                    client.envoyer("EPARGNE");
                     break;
                 case "HIST":
                     System.out.println("HIST");
-                    break;
             }
+
+
         }
 
 

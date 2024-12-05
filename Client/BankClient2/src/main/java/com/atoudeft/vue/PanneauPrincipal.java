@@ -34,13 +34,13 @@ public class PanneauPrincipal  extends JPanel {
 
     public PanneauPrincipal(Client client) {
         this.client = client;
+        EcouteurOperationsCompte ecouteurOperationsCompte = new EcouteurOperationsCompte(client);
 
         panneauConnexion = new PanneauConnexion();
         panneauConnexion.setEcouteur(new EcouteurConnexion(client,panneauConnexion));
 
 
         panneauOperationsCompte = new PanneauOperationsCompte();
-        panneauOperationsCompte.setEcouteur(new EcouteurOperationsCompte(client,panneauOperationsCompte));
 
         panneauCompteClient = new JPanel();
 
@@ -55,11 +55,15 @@ public class PanneauPrincipal  extends JPanel {
         jlNumerosComptes.setBorder(BorderFactory.createTitledBorder("Comptes bancaires"));
         jlNumerosComptes.setPreferredSize(new Dimension(250,500));
 
+
         // jtextArea
         textAreaComptes = new JTextArea(10,30);
         textAreaComptes.setEditable(false);
         textAreaComptes.setBackground(Color.red);
         textAreaComptes.setBorder(new LineBorder(Color.black));
+
+        panneauOperationsCompte.setEcouteur(ecouteurOperationsCompte);
+
 
         panneauCompteClient.add(panneauOperationsCompte, BorderLayout.NORTH);
         panneauCompteClient.add(jlNumerosComptes, BorderLayout.WEST);
