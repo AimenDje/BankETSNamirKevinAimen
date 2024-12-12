@@ -6,6 +6,7 @@ import com.atoudeft.controleur.EcouteurListeComptes;
 import com.atoudeft.controleur.EcouteurOperationsCompte;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +27,8 @@ public class PanneauPrincipal  extends JPanel {
 
     private DefaultListModel<String> numerosComptes;
     private JList<String> jlNumerosComptes;
+    private JTextArea textAreaComptes;
+    private JPanel panneauhistorique;
     private JDesktopPane bureau;
 
 
@@ -36,7 +39,9 @@ public class PanneauPrincipal  extends JPanel {
         panneauConnexion = new PanneauConnexion();
         panneauConnexion.setEcouteur(new EcouteurConnexion(client,panneauConnexion));
 
+
         panneauOperationsCompte = new PanneauOperationsCompte();
+
         panneauCompteClient = new JPanel();
 
         panneauCompteClient.setLayout(new BorderLayout());
@@ -50,6 +55,13 @@ public class PanneauPrincipal  extends JPanel {
         jlNumerosComptes.setBorder(BorderFactory.createTitledBorder("Comptes bancaires"));
         jlNumerosComptes.setPreferredSize(new Dimension(250,500));
 
+
+        // jtextArea
+        /*
+        textAreaComptes = new JTextArea(10,30);
+        textAreaComptes.setEditable(false);
+        textAreaComptes.setBorder(new LineBorder(Color.black));
+          */
         panneauOperationsCompte.setEcouteur(ecouteurOperationsCompte);
 
 
@@ -59,7 +71,7 @@ public class PanneauPrincipal  extends JPanel {
         jlNumerosComptes.addMouseListener(new EcouteurListeComptes(client));
 
         this.setLayout(new BorderLayout());
-
+        //panneauCompteClient.add(textAreaComptes, BorderLayout.CENTER); // GRAND FENETRE
         this.add(panneauConnexion, BorderLayout.NORTH);
         this.add(panneauCompteClient, BorderLayout.CENTER);
         panneauCompteClient.setVisible(false);
