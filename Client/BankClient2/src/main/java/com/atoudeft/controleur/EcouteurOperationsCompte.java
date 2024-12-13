@@ -135,6 +135,42 @@ public class EcouteurOperationsCompte implements ActionListener {
                         }
                     }
                     client.envoyer("TRANSFER "+ montant+" "+compteOrigine +" "+compteDestinataire);
+
+                    break;
+
+                case "FACTURE":
+                    PanneauOperationFacture panelFacture = new PanneauOperationFacture();
+                    valide = false;
+                    while (!valide) {
+                        res = JOptionPane.showConfirmDialog(
+                                this.panneauPrincipal,
+                                panelFacture,
+                                "Facture à payer",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE
+                        );
+
+                        if (res == JOptionPane.OK_OPTION) {
+                            montant = panelFacture.getMontant();
+                            numeroFacture = panelFacture.getNumeroFacture();
+                            description = panelFacture.getDesciption();
+
+                            try {
+                                int port = Integer.parseInt(montant);
+                                valide = true;
+
+
+                            } catch (NumberFormatException w) {
+                                JOptionPane.showMessageDialog(this.panneauPrincipal, "Le montant doit être un nombre valide.", "Erreur", JOptionPane.ERROR_MESSAGE);
+
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(this.panneauPrincipal, "Paiment de facture annulée.", "Information", JOptionPane.INFORMATION_MESSAGE);
+                            break;
+                        }
+                    }
+                    client.envoyer("FACTURE "+ montant+" "+numeroFacture +" "+description);
+
                     break;
 
                 case "HIST":
