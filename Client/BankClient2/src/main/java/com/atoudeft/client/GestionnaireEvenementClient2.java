@@ -3,7 +3,6 @@ package com.atoudeft.client;
 import com.atoudeft.commun.evenement.Evenement;
 import com.atoudeft.commun.evenement.GestionnaireEvenement;
 import com.atoudeft.commun.net.Connexion;
-import com.atoudeft.vue.PanneauConnexion;
 import com.atoudeft.vue.PanneauPrincipal;
 import com.programmes.MainFrame;
 import jdk.nashorn.internal.scripts.JO;
@@ -97,24 +96,65 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                     break;
                 case "SELECT" :
                     arg = evenement.getArgument();
-                    JOptionPane.showMessageDialog(panneauPrincipal,"SELECT "+arg);
+                    if(arg.trim().startsWith("NO")){
+                        JOptionPane.showMessageDialog(panneauPrincipal, "Erreur lors du choix de compte" );
+                    }
+                    else {
+                        str = arg.substring(arg.indexOf("OK")+2).trim();
+                        t = str.split(" ");
+                        panneauPrincipal.miseAJourSolde(t[1]);
+
+                    }
                     break;
                 /******************* OPÉRATIONS BANCAIRES *******************/
                 case "DEPOT" :
                     arg = evenement.getArgument();
-                    JOptionPane.showMessageDialog(panneauPrincipal,"DEPOT "+arg);
+                    if(arg.trim().startsWith("NO")){
+                        JOptionPane.showMessageDialog(panneauPrincipal, "Dépot impossible" );
+                    }
+                    else {
+                        str = arg.substring(arg.indexOf("OK")+2).trim();
+                        panneauPrincipal.miseAJourSolde(str);
+
+                    }
+                    JOptionPane.showMessageDialog(panneauPrincipal,"Dépot effectué");
                     break;
                 case "RETRAIT" :
                     arg = evenement.getArgument();
-                    JOptionPane.showMessageDialog(panneauPrincipal,"RETRAIT "+arg);
+                    if(arg.trim().startsWith("NO")){
+                        JOptionPane.showMessageDialog(panneauPrincipal, "Dépot impossible" );
+                    }
+                    else {
+                        str = arg.substring(arg.indexOf("OK")+2).trim();
+                        panneauPrincipal.miseAJourSolde(str);
+
+                    }
+                    JOptionPane.showMessageDialog(panneauPrincipal,"Retirer effectué");
                     break;
                 case "FACTURE" :
                     arg = evenement.getArgument();
-                    JOptionPane.showMessageDialog(panneauPrincipal,"FACTURE" + arg);
+                    if(arg.trim().startsWith("NO")){
+                        JOptionPane.showMessageDialog(panneauPrincipal, "Facture impossible" );
+                    }
+                    else {
+                        str = arg.substring(arg.indexOf("OK")+2).trim();
+                        panneauPrincipal.miseAJourSolde(str);
+
+                    }
+                    JOptionPane.showMessageDialog(panneauPrincipal,"Paiment EFFECTUÉ" );
                     break;
                 case "TRANSFER" :
                     arg = evenement.getArgument();
-                    JOptionPane.showMessageDialog(panneauPrincipal,"TRANSFER " + arg);
+                    if(arg.trim().startsWith("NO")){
+                        JOptionPane.showMessageDialog(panneauPrincipal, "Transfert impossible" );
+                    }
+                    else {
+                        str = arg.substring(arg.indexOf("OK")+2).trim();
+                        t = str.split(" ");
+                        panneauPrincipal.miseAJourSolde(str);
+
+                    }
+                    JOptionPane.showMessageDialog(panneauPrincipal,"TRANSFER EFFECTUÉ" );
                     break;
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default:

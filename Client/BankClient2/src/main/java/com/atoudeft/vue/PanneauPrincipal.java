@@ -6,12 +6,7 @@ import com.atoudeft.controleur.EcouteurListeComptes;
 import com.atoudeft.controleur.EcouteurOperationsCompte;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  *
@@ -24,6 +19,8 @@ public class PanneauPrincipal  extends JPanel {
     private PanneauConnexion panneauConnexion;
     private JPanel panneauCompteClient;
     private PanneauOperationsCompte panneauOperationsCompte;
+    private PanneauOperationDepotRetrait panneauOperationDepotRetrait;
+
 
     private DefaultListModel<String> numerosComptes;
     private JList<String> jlNumerosComptes;
@@ -34,7 +31,7 @@ public class PanneauPrincipal  extends JPanel {
 
     public PanneauPrincipal(Client client) {
         this.client = client;
-        EcouteurOperationsCompte ecouteurOperationsCompte = new EcouteurOperationsCompte(client);
+        EcouteurOperationsCompte ecouteurOperationsCompte = new EcouteurOperationsCompte(client,this);
 
         panneauConnexion = new PanneauConnexion();
         panneauConnexion.setEcouteur(new EcouteurConnexion(client,panneauConnexion));
@@ -43,10 +40,14 @@ public class PanneauPrincipal  extends JPanel {
         panneauOperationsCompte = new PanneauOperationsCompte();
 
         panneauCompteClient = new JPanel();
+        panneauOperationDepotRetrait = new PanneauOperationDepotRetrait();
 
         panneauCompteClient.setLayout(new BorderLayout());
         panneauCompteClient.setBackground(Color.WHITE);
         panneauOperationsCompte.setBackground(Color.WHITE);
+
+        panneauCompteClient.add(panneauOperationDepotRetrait, BorderLayout.CENTER); // Add PanneauOperationDepot to the main panel
+        panneauOperationDepotRetrait.setVisible(false);
 
         numerosComptes = new DefaultListModel<>();
 
@@ -68,7 +69,7 @@ public class PanneauPrincipal  extends JPanel {
         panneauCompteClient.add(panneauOperationsCompte, BorderLayout.NORTH);
         panneauCompteClient.add(jlNumerosComptes, BorderLayout.WEST);
         //Enregistrement de l'écouteur de souris:
-        jlNumerosComptes.addMouseListener(new EcouteurListeComptes(client));
+        jlNumerosComptes.addMouseListener(new EcouteurListeComptes(client,this));
 
         this.setLayout(new BorderLayout());
         //panneauCompteClient.add(textAreaComptes, BorderLayout.CENTER); // GRAND FENETRE
@@ -98,6 +99,12 @@ public class PanneauPrincipal  extends JPanel {
     public void montrerPanneauCompteClient() {
         panneauCompteClient.setVisible(true);
     }
+    public PanneauOperationsCompte getPanneauOperationsCompte() {
+        return panneauOperationsCompte;
+    }
+    public PanneauOperationDepotRetrait PanneauOperationDepot() {
+        return panneauOperationDepotRetrait;
+    }
     /**
      * Affiche un numéro de compte dans le JList des comptes.
      *
@@ -106,4 +113,10 @@ public class PanneauPrincipal  extends JPanel {
     public void ajouterCompte(String str) {
         numerosComptes.addElement(str);
     }
+    public void miseAJourSolde(String str) {
+        panneauOperationsCompte.seMettreAJour(str);
+    }
+
+
+
 }

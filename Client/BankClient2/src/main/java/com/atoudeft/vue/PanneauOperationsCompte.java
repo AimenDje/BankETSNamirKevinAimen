@@ -1,5 +1,7 @@
 package com.atoudeft.vue;
 
+import com.atoudeft.observer.Observable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -43,4 +45,11 @@ public class PanneauOperationsCompte extends JPanel {
         bFacture.addActionListener(ecouteur);
         bHistorique.addActionListener(ecouteur);
     }
+
+    public void seMettreAJour(String solde) {
+        this.lblSolde.setText("Solde : "+ solde);
+        this.lblSolde.repaint();
+    }
+
+
 }
